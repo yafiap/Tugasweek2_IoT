@@ -22,12 +22,12 @@
     [ "dht1:GND", "esp:GND.2", "black", [ "h316.8", "v96" ] ],
     [ "ultrasonic1:VCC", "esp:5V", "red", [ "v326.4" ] ],
     [ "ultrasonic1:GND", "esp:GND.2", "black", [ "v48", "h123.6", "v115.2" ] ],
-    [ "dht1:SDA", "esp:15", "green", [ "h364.9", "v240" ] ],
+    [ "dht1:SDA", "esp:15", "green", [ "v9.6", "h364.9", "v230.4" ] ],
     [ "ultrasonic1:TRIG", "esp:2", "green", [ "v96", "h124.4", "v182.4" ] ],
     [ "servo1:GND", "esp:GND.2", "black", [ "v0" ] ],
     [ "servo1:V+", "esp:5V", "red", [ "v230.4", "h-287.9", "v-19.2" ] ],
     [ "servo1:PWM", "esp:4", "green", [ "v0" ] ],
-    [ "ultrasonic1:ECHO", "esp:16", "green", [ "v86.4", "h124", "v172.8" ] ]
+    [ "ultrasonic1:ECHO", "esp:16", "green", [ "v86.4", "h143.2", "v172.8" ] ]
   ],
   "dependencies": {}
 }
