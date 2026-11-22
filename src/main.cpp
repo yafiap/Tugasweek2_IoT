@@ -4,13 +4,11 @@
 #include <DHTesp.h>
 #include <ESP32Servo.h>
 
-// ---------- Pins ----------
 const int DHT_PIN   = 15;
-const int TRIG_PIN  = 2;    // HC-SR04 TRIG  (check in diagram.json)
-const int ECHO_PIN  = 16;    // HC-SR04 ECHO  (check in diagram.json)
-const int SERVO_PIN = 4;   // Servo signal  (check in diagram.json)
+const int TRIG_PIN  = 2;    
+const int ECHO_PIN  = 16;    
+const int SERVO_PIN = 4;   
 
-// ---------- Objects ----------
 DHTesp dht;
 Servo servo;
 WiFiClient espClient;
@@ -21,7 +19,8 @@ const char *password = "";
 const char *mqtt_server = "mqtt-dashboard.com";
 
 unsigned long lastMsg = 0;
-bool autoMode = true;         
+bool autoMode = true;
+int ServoAngle = 0;         
 
 void setup_wifi()
 {
@@ -78,9 +77,10 @@ void callback(char *topic, byte *payload, unsigned int length)
     {
       int angle = constrain(msg.toInt(), 0, 180);  // send 0..180
       autoMode = false;
-      servo.write(angle);
+      ServoAngle = angle;
+      servo.write(ServoAngle);
       Serial.print("Servo: MANUAL angle = ");
-      Serial.println(angle);
+      Serial.println(ServoAngle);
     }
   }
 }
@@ -146,18 +146,16 @@ void loop()
     float distance = readDistanceCM();
     String dist = String(distance, 1);
     client.publish("/tugasweek2_yafi/distance", dist.c_str());
-
     if (autoMode && distance > 0)
-    {
-      int angle; 
+    { 
       if(distance < 50.0){
-        angle=90;
+        ServoAngle=90;
       }else{
-        angle = 0;
+        ServoAngle = 0;
       }
-      servo.write(angle);
-      client.publish("/tugasweek2_yafi/servoState", String(angle).c_str());
+      servo.write(ServoAngle);
     }
+    client.publish("/tugasweek2_yafi/servoState", String(ServoAngle).c_str());
 
     Serial.print("Temperature: "); 
     Serial.println(temp);
@@ -166,5 +164,7 @@ void loop()
     Serial.print("Distance: ");    
     Serial.print(dist); 
     Serial.println(" cm");
+    Serial.print("Servo: ");
+    Serial.println(ServoAngle);
   }
 }
